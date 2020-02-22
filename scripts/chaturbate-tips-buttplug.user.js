@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Chaturbate Tips to Buttplug.io
-// @namespace https://raw.github.com/buttplugio/buttplug-chaturbate/master/scripts/chaturbate-tips-buttplug.user.js
+// @namespace https://github.com/buttplugio/buttplug-tampermonkey/raw/master/scripts/chaturbate-tips-buttplug.user.js
 // @version 0.1
 // @description injects code to read tips from chatubrate.com and translate them into vibration
 // @include http*://chaturbate.com/*/
