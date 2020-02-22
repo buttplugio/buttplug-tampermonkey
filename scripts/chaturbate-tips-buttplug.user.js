@@ -1,8 +1,11 @@
 // ==UserScript==
 // @name Chaturbate Tips to Buttplug.io
-// @namespace https://github.com/buttplugio/buttplug-tampermonkey/raw/master/scripts/chaturbate-tips-buttplug.user.js
-// @version 0.1
-// @description injects code to read tips from chatubrate.com and translate them into vibration
+// @description Uses buttplug-js to cause local sex toys to work when a tip appears in a chaturbate chat
+// @author buttplugio
+// @version 0.2
+// @homepage https://buttplugio.github.io/buttplug-tampermonkey
+// @updateurl https://github.com/buttplugio/buttplug-tampermonkey/raw/master/scripts/chaturbate-tips-buttplug.user.js
+// @downloadurl https://github.com/buttplugio/buttplug-tampermonkey/raw/master/scripts/chaturbate-tips-buttplug.user.js
 // @include http*://chaturbate.com/*/
 // @include http*://*.chaturbate.com/*/
 // @include http*://cb.dev/*/
