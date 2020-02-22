@@ -1,0 +1,237 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/buttplug@0.12.2/dist/web/buttplug.min.js" defer></script>
+    <style>
+     .buttplug-button {
+	     box-shadow:inset 0px 1px 3px 0px #91b8b3;
+	     background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	     background-color:#768d87;
+	     border-radius:5px;
+	     border:1px solid #566963;
+	     display:inline-block;
+	     cursor:pointer;
+	     color:#ffffff;
+	     font-family:Arial;
+	     font-size:15px;
+	     font-weight:bold;
+	     padding:11px 23px;
+	     text-decoration:none;
+	     text-shadow:0px -1px 0px #2b665e;
+       margin: 5px;
+     }
+     .buttplug-button:hover {
+	     background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	     background-color:#6c7c7c;
+     }
+     .buttplug-button:active {
+	     position:relative;
+	     top:1px;
+     }
+
+     #buttplug-dialog {
+       width: 50%;
+       min-height: 200px;
+       position: absolute;
+       top: 0;
+       left: 0;
+       left: 0;
+       right: 0;
+       margin: auto;
+       background: #888888;
+       cursor: move;
+       border-radius: 3px;
+     }
+
+     .close {
+       background: #000;
+       cursor: pointer;
+       width: 10px;
+       height: 10px;
+       border-radius: 2px;
+     }
+
+     #close-top-left {
+       position: absolute;
+       top: 0;
+       left: 0;
+     }
+
+     #close-top-right {
+       position: absolute;
+       top: ;
+       right: 0;
+     }
+
+     #close-bottom-left {
+       position: absolute;
+       bottom: 0;
+       left: 0;
+     }
+
+     #close-bottom-right {
+       position: absolute;
+       bottom: 0;
+       right: 0;
+     }
+
+     body {
+       width: 100%;
+       height: 100%;
+     }
+
+     .open {
+       width: 50px;
+       height: 50px;
+       background: url("buttplug.svg");
+       display: none;
+     }
+
+     #open-top-left {
+       position: absolute;
+       top: 0;
+       left: 0;
+     }
+
+     #open-top-right {
+       position: absolute;
+       top: 0;
+       right: 0;
+     }
+
+     #open-bottom-left {
+       position: absolute;
+       bottom: 0;
+       left: 0;
+     }
+
+     #open-bottom-right {
+       position: absolute;
+       bottom: 0;
+       right: 0;
+     }
+
+     #container {
+       width: 100%;
+       height: 100%;
+     }
+
+     #buttplug-container {
+       margin: 10px;
+       display: flex;
+     }
+
+     #buttplug-connector {
+       display: none;
+     }
+
+     #buttplug-controls {
+     }
+
+    </style>
+  </head>
+  <body>
+    <div id="open-top-left" class="open"></div>
+    <div id="open-top-right" class="open"></div>
+    <div id="open-bottom-left" class="open"></div>
+    <div id="open-bottom-right" class="open"></div>
+    <div id="container">
+      <div id="buttplug-dialog">
+        <div id="close-top-left" class="close"></div>
+        <div id="close-top-right" class="close"></div>
+        <div id="close-bottom-left" class="close"></div>
+        <div id="close-bottom-right" class="close"></div>
+        <div id="buttplug-container">
+          <div id="buttplug-connector">
+            <a href="#" class="buttplug-button">Connect in Browser</a>
+            <br/>
+            <a href="#" class="buttplug-button">Connect to Intiface Desktop</a>
+            <br/>
+          </div>
+          <div id="buttplug-enumeration">
+          </div>
+        </div>
+      </div>
+    </div>
+    <script defer>
+     let dragItem = document.querySelector("#buttplug-dialog");
+
+     for (const vert of ["top", "bottom"]) {
+       for (const horz of ["left", "right"] ) {
+         let close = document.getElementById(`close-${vert}-${horz}`);
+         let open = document.getElementById(`open-${vert}-${horz}`);
+         close.addEventListener("click", () => {
+           dragItem.style.display = "none";
+           open.style.display = "block";
+         }, false);
+
+         open.addEventListener("dblclick", () => {
+           open.style.display = "none";
+           dragItem.style.display = "block";
+         }, false);
+       }
+     }
+
+     let container = document.querySelector("#container");
+
+     let active = false;
+     let currentX;
+     let currentY;
+     let initialX;
+     let initialY;
+     let xOffset = 0;
+     let yOffset = 0;
+
+     container.addEventListener("touchstart", dragStart, false);
+     container.addEventListener("touchend", dragEnd, false);
+     container.addEventListener("touchmove", drag, false);
+
+     container.addEventListener("mousedown", dragStart, false);
+     container.addEventListener("mouseup", dragEnd, false);
+     container.addEventListener("mousemove", drag, false);
+
+     function dragStart(e) {
+       if (e.type === "touchstart") {
+         initialX = e.touches[0].clientX - xOffset;
+         initialY = e.touches[0].clientY - yOffset;
+       } else {
+         initialX = e.clientX - xOffset;
+         initialY = e.clientY - yOffset;
+       }
+
+       if (e.target === dragItem) {
+         active = true;
+       }
+     }
+
+     function dragEnd(e) {
+       initialX = currentX;
+       initialY = currentY;
+
+       active = false;
+     }
+
+     function drag(e) {
+       if (active) {
+         e.preventDefault();
+         if (e.type === "touchmove") {
+           currentX = e.touches[0].clientX - initialX;
+           currentY = e.touches[0].clientY - initialY;
+         } else {
+           currentX = e.clientX - initialX;
+           currentY = e.clientY - initialY;
+         }
+
+         xOffset = currentX;
+         yOffset = currentY;
+
+         setTranslate(currentX, currentY, dragItem);
+       }
+     }
+
+     function setTranslate(xPos, yPos, el) {
+       el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+     }
+    </script>
+
+  </body>
+</html>
