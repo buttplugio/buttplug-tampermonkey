@@ -195,7 +195,7 @@ window.addEventListener("load", function (e) {
       let open_element = document.createElement('div');
       open_element.id = `open-${vert}-${horz}`;
       open_element.classList.add("open");
-      body.appendChild(open1);
+      body.appendChild(open_element);
     }
   }
   let container_div = document.createElement('div');
