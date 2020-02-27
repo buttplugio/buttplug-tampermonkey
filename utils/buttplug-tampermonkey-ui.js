@@ -227,9 +227,9 @@ window.addEventListener("load", function (e) {
   container_div.id = "buttplug-top-container";
   body.appendChild(container_div);
 
-  // We need the buttplug_usable_devices to be global, so that tampermonkey user
+  // We need the buttplug_devices to be global, so that tampermonkey user
   // scripts can work with it. Hang it off window.
-  window.buttplug_usable_devices = [];
+  window.buttplug_devices = [];
 
   setTimeout(() =>
              (function () {
@@ -251,12 +251,12 @@ window.addEventListener("load", function (e) {
                  checkbox.id = checkbox_id;
                  checkbox.addEventListener("change", async (event) => {
                    if (checkbox.checked) {
-                     window.buttplug_usable_devices.push(device);
+                     window.buttplug_devices.push(device);
                    } else {
-                     const index = window.buttplug_usable_devices.indexOf(device);
+                     const index = window.buttplug_devices.indexOf(device);
                      if (index > -1) {
                        await device.SendStopDeviceCmd();
-                       window.buttplug_usable_devices.splice(index, 1);
+                       window.buttplug_devices.splice(index, 1);
                      }
                    }
                  });
