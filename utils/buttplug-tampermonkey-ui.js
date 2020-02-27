@@ -43,6 +43,7 @@ window.addEventListener("load", function (e) {
        height: 100%;
        overflow: hidden;
        background: rgba(0, 0, 0, 0.8);
+       display: none;
      }
 
      #buttplug-dialog {
@@ -114,6 +115,7 @@ window.addEventListener("load", function (e) {
        position: absolute;
        top: 0;
        right: 0;
+       display: block;
      }
 
      #open-bottom-left {
@@ -186,6 +188,51 @@ window.addEventListener("load", function (e) {
      }
 `;
   let body = document.querySelector('body');
+  body.appendChild(style);
+  let open1 = document.createElement('div');
+  open1.id = "open-top-right";
+  open1.classList.add("open");
+  body.appendChild(open1);
+      let open2 = document.createElement('div');
+  open2.id = "open-top-left";
+  open2.classList.add("open");
+  body.appendChild(open2);
+      let open3 = document.createElement('div');
+  open3.id = "open-bottom-right";
+  open3.classList.add("open");
+  body.appendChild(open3);
+      let open4 = document.createElement('div');
+  open4.id = "open-bottom-left";
+  open4.classList.add("open");
+  body.appendChild(open4);
+  let container_div = document.createElement('div');
+  container_div.innerHTML = `<div id="buttplug-dialog">
+        <div id="close-top-left" class="close"></div>
+        <div id="close-top-right" class="close"></div>
+        <div id="close-bottom-left" class="close"></div>
+        <div id="close-bottom-right" class="close"></div>
+        <div id="buttplug-container">
+          <div id="buttplug-connector">
+            <a href="#" class="buttplug-button" id="buttplug-connect-browser">Connect in Browser</a>
+            <br/>
+            <a href="#" class="buttplug-button" id="buttplug-connect-intiface">Connect to Intiface Desktop</a>
+            <br/>
+          </div>
+          <div id="buttplug-enumeration">
+            <a href="#" class="buttplug-button" id="buttplug-scanning">Start Scanning</a>
+            <a href="#" class="buttplug-button" id="buttplug-disconnect">Disconnect</a>
+            <br/>
+            <h3>Devices</h3>
+            <ul id="buttplug-device-list">
+              <li>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>`;
+    container_div.id = "buttplug-top-container";
+    body.appendChild(container_div);
+/*
   body.innerHTML += `
     <div id="open-top-left" class="open"></div>
     <div id="open-top-right" class="open"></div>
@@ -218,7 +265,9 @@ window.addEventListener("load", function (e) {
       </div>
     </div>
 `;
+*/
 
+  setTimeout(() =>
   (function () {
     // Set up Buttplug
     const buttplug_client = new Buttplug.ButtplugClient("Tutorial Client");
@@ -269,8 +318,6 @@ window.addEventListener("load", function (e) {
       enumeration_div.style.display = "block";
     }, false);
 
-    /* let button = document.createElement("button");
-     * button.innerHTML = "Click to vibrate"; */
     scanning_button.addEventListener('click', async () => {
       await buttplug_client.StartScanning();
     });
@@ -352,7 +399,6 @@ window.addEventListener("load", function (e) {
     function setTranslate(xPos, yPos, el) {
       el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
     }
-  })();
+  })(), 0);
 
-});
-
+}, false);
