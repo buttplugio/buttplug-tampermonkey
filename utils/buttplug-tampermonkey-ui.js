@@ -105,26 +105,26 @@ window.addEventListener("load", function (e) {
      }
 
      #open-top-left {
-       position: absolute;
+       position: fixed;
        top: 0;
        left: 0;
      }
 
      #open-top-right {
-       position: absolute;
+       position: fixed;
        top: 0;
        right: 0;
        display: block;
      }
 
      #open-bottom-left {
-       position: absolute;
+       position: fixed;
        bottom: 0;
        left: 0;
      }
 
      #open-bottom-right {
-       position: absolute;
+       position: fixed;
        bottom: 0;
        right: 0;
      }
