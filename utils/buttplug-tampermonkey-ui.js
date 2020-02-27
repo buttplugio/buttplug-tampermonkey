@@ -218,139 +218,141 @@ window.addEventListener("load", function (e) {
       </div>
     </div>
 `;
+
+  (function () {
+    // Set up Buttplug
+    const buttplug_client = new Buttplug.ButtplugClient("Tutorial Client");
+    const buttplug_usable_devices = [];
+    const connector_div = document.getElementById("buttplug-connector");
+    const enumeration_div = document.getElementById("buttplug-enumeration");
+    const scanning_button = document.getElementById("buttplug-scanning");
+    const connect_browser_button = document.getElementById("buttplug-connect-browser");
+    const connect_intiface_button = document.getElementById("buttplug-connect-intiface");
+    const device_list = document.getElementById("buttplug-device-list");
+    buttplug_client.addListener('deviceadded', async (device) => {
+      const element_id = `buttplug-device-${device.Index}`;
+      const input = document.createElement("li");
+      input.id = element_id;
+      const checkbox = document.createElement("input");
+      const checkbox_id = `${element_id}-checkbox`
+      checkbox.type = "checkbox";
+      checkbox.id = checkbox_id;
+      checkbox.addEventListener("change", async (event) => {
+        if (checkbox.checked) {
+          buttplug_usable_devices.push(device);
+        } else {
+          const index = buttplug_usable_devices.indexOf(device);
+          if (index > -1) {
+            await device.SendStopDeviceCmd();
+            buttplug_usable_devices.splice(index, 1);
+          }
+        }
+      });
+      let label = document.createElement("label");
+      label.for = `${element_id}-checkbox`;
+      label.innerHTML = device.Name;
+      input.appendChild(checkbox);
+      input.appendChild(label);
+      device_list.appendChild(input);
+    });
+
+    buttplug_client.addListener('deviceremoved', async (device) => {
+      const element_id = `buttplug-device-${device.Index}`;
+      var element = document.getElementById(element_id);
+      element.parentNode.removeChild(element);
+    });
+
+    connect_browser_button.addEventListener("click", async (event) => {
+      const connector = new Buttplug.ButtplugEmbeddedClientConnector();
+      await buttplug_client.Connect(connector);
+      connector_div.style.display = "none";
+      enumeration_div.style.display = "block";
+    }, false);
+
+    /* let button = document.createElement("button");
+     * button.innerHTML = "Click to vibrate"; */
+    scanning_button.addEventListener('click', async () => {
+      await buttplug_client.StartScanning();
+    });
+
+    let container = document.querySelector("#buttplug-top-container");
+    let dragItem = document.querySelector("#buttplug-dialog");
+
+    for (const vert of ["top", "bottom"]) {
+      for (const horz of ["left", "right"] ) {
+        let close = document.getElementById(`close-${vert}-${horz}`);
+        let open = document.getElementById(`open-${vert}-${horz}`);
+        close.addEventListener("click", () => {
+          container.style.display = "none";
+          open.style.display = "block";
+        }, false);
+
+        open.addEventListener("dblclick", () => {
+          open.style.display = "none";
+          container.style.display = "block";
+        }, false);
+      }
+    }
+
+    let active = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    container.addEventListener("touchstart", dragStart, false);
+    container.addEventListener("touchend", dragEnd, false);
+    container.addEventListener("touchmove", drag, false);
+
+    container.addEventListener("mousedown", dragStart, false);
+    container.addEventListener("mouseup", dragEnd, false);
+    container.addEventListener("mousemove", drag, false);
+
+    function dragStart(e) {
+      if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+      } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+      }
+
+      if (e.target === dragItem) {
+        active = true;
+      }
+    }
+
+    function dragEnd(e) {
+      initialX = currentX;
+      initialY = currentY;
+
+      active = false;
+    }
+
+    function drag(e) {
+      if (active) {
+        e.preventDefault();
+        if (e.type === "touchmove") {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, dragItem);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+  })();
+
 });
 
-(function () {
-  // Set up Buttplug
-  const buttplug_client = new Buttplug.ButtplugClient("Tutorial Client");
-  const buttplug_usable_devices = [];
-  const connector_div = document.getElementById("buttplug-connector");
-  const enumeration_div = document.getElementById("buttplug-enumeration");
-  const scanning_button = document.getElementById("buttplug-scanning");
-  const connect_browser_button = document.getElementById("buttplug-connect-browser");
-  const connect_intiface_button = document.getElementById("buttplug-connect-intiface");
-  const device_list = document.getElementById("buttplug-device-list");
-  buttplug_client.addListener('deviceadded', async (device) => {
-    const element_id = `buttplug-device-${device.Index}`;
-    const input = document.createElement("li");
-    input.id = element_id;
-    const checkbox = document.createElement("input");
-    const checkbox_id = `${element_id}-checkbox`
-    checkbox.type = "checkbox";
-    checkbox.id = checkbox_id;
-    checkbox.addEventListener("change", async (event) => {
-      if (checkbox.checked) {
-        buttplug_usable_devices.push(device);
-      } else {
-        const index = buttplug_usable_devices.indexOf(device);
-        if (index > -1) {
-          await device.SendStopDeviceCmd();
-          buttplug_usable_devices.splice(index, 1);
-        }
-      }
-    });
-    let label = document.createElement("label");
-    label.for = `${element_id}-checkbox`;
-    label.innerHTML = device.Name;
-    input.appendChild(checkbox);
-    input.appendChild(label);
-    device_list.appendChild(input);
-  });
-
-  buttplug_client.addListener('deviceremoved', async (device) => {
-    const element_id = `buttplug-device-${device.Index}`;
-    var element = document.getElementById(element_id);
-    element.parentNode.removeChild(element);
-  });
-
-  connect_browser_button.addEventListener("click", async (event) => {
-    const connector = new Buttplug.ButtplugEmbeddedClientConnector();
-    await buttplug_client.Connect(connector);
-    connector_div.style.display = "none";
-    enumeration_div.style.display = "block";
-  }, false);
-
-  /* let button = document.createElement("button");
-   * button.innerHTML = "Click to vibrate"; */
-  scanning_button.addEventListener('click', async () => {
-    await buttplug_client.StartScanning();
-  });
-
-  let container = document.querySelector("#buttplug-top-container");
-  let dragItem = document.querySelector("#buttplug-dialog");
-
-  for (const vert of ["top", "bottom"]) {
-    for (const horz of ["left", "right"] ) {
-      let close = document.getElementById(`close-${vert}-${horz}`);
-      let open = document.getElementById(`open-${vert}-${horz}`);
-      close.addEventListener("click", () => {
-        container.style.display = "none";
-        open.style.display = "block";
-      }, false);
-
-      open.addEventListener("dblclick", () => {
-        open.style.display = "none";
-        container.style.display = "block";
-      }, false);
-    }
-  }
-
-  let active = false;
-  let currentX;
-  let currentY;
-  let initialX;
-  let initialY;
-  let xOffset = 0;
-  let yOffset = 0;
-
-  container.addEventListener("touchstart", dragStart, false);
-  container.addEventListener("touchend", dragEnd, false);
-  container.addEventListener("touchmove", drag, false);
-
-  container.addEventListener("mousedown", dragStart, false);
-  container.addEventListener("mouseup", dragEnd, false);
-  container.addEventListener("mousemove", drag, false);
-
-  function dragStart(e) {
-    if (e.type === "touchstart") {
-      initialX = e.touches[0].clientX - xOffset;
-      initialY = e.touches[0].clientY - yOffset;
-    } else {
-      initialX = e.clientX - xOffset;
-      initialY = e.clientY - yOffset;
-    }
-
-    if (e.target === dragItem) {
-      active = true;
-    }
-  }
-
-  function dragEnd(e) {
-    initialX = currentX;
-    initialY = currentY;
-
-    active = false;
-  }
-
-  function drag(e) {
-    if (active) {
-      e.preventDefault();
-      if (e.type === "touchmove") {
-        currentX = e.touches[0].clientX - initialX;
-        currentY = e.touches[0].clientY - initialY;
-      } else {
-        currentX = e.clientX - initialX;
-        currentY = e.clientY - initialY;
-      }
-
-      xOffset = currentX;
-      yOffset = currentY;
-
-      setTranslate(currentX, currentY, dragItem);
-    }
-  }
-
-  function setTranslate(xPos, yPos, el) {
-    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-  }
-})();
