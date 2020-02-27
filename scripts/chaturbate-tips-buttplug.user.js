@@ -60,8 +60,12 @@ window.addEventListener('load', async function() {
       lastTipCount = tips.length;
       if (newTips.length) {
         newTipsOccurred(newTips);
-        for (const device of window.buttplug_devices.length) {
-          if (device.allowedMessages.includes("VibrateCmd")) {
+        // window.buttplug_devices is defined in the buttplug-tampermonkey-ui.js
+        // file, and contains a list of all devices we've added. This is a
+        // Buttplug.ButtplugClientDevice object, API is at
+        // https://buttplug-js.docs.buttplug.io/classes/buttplugclientdevice.html
+        for (const device of window.buttplug_devices) {
+          if (device.AllowedMessages.includes("VibrateCmd")) {
             await window.buttplug_devices[0].SendVibrateCmd(1.0);
             setTimeout(() => window.buttplug_devices[0].SendVibrateCmd(0), newTips[0].amount * 100);
           }
