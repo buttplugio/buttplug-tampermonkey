@@ -33,7 +33,7 @@
 // @exclude http*://*.*/2257/*
 // @exclude http*://*.*/photo_videos/*
 // @require https://cdn.jsdelivr.net/npm/buttplug@0.12.2/dist/web/buttplug.min.js
-// @require https://raw.githubusercontent.com/buttplugio/buttplug-tampermonkey/ui/utils/buttplug-tampermonkey-ui.js
+// @require https://raw.githubusercontent.com/buttplugio/buttplug-tampermonkey/master/utils/buttplug-tampermonkey-ui.js
 // @copyright MIT
 // ==/UserScript==
 
