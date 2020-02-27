@@ -99,7 +99,8 @@ window.addEventListener("load", function (e) {
      .open {
        width: 50px;
        height: 50px;
-       background: url("buttplug.svg");
+       /* background: url("buttplug.svg"); */
+       background: #000;
        display: none;
      }
 
