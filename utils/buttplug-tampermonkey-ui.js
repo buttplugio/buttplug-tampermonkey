@@ -282,6 +282,13 @@ window.addEventListener("load", function (e) {
                  enumeration_div.style.display = "block";
                }, false);
 
+               connect_intiface_button.addEventListener("click", async (event) => {
+                 const connector = new Buttplug.ButtplugBrowserWebsocketClientConnector("wss://localhost:12346/");
+                 await buttplug_client.Connect(connector);
+                 connector_div.style.display = "none";
+                 enumeration_div.style.display = "block";
+               }, false);
+
                scanning_button.addEventListener('click', async () => {
                  await buttplug_client.StartScanning();
                });
