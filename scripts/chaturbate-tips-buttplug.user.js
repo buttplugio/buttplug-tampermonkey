@@ -43,11 +43,11 @@ function newTipsOccurred(tips) {
 }
 window.addEventListener('load', async function() {
   (function() {
-    let chatbox = $('#chat-box')[0];
+    let chatbox = $('.chat-box')[0];
     let lastTipCount = 0;
     chatbox.addEventListener('DOMNodeInserted', async function(event){
       let tips = Array
-          .apply(null, $('#chat-box span.emoticonImage')
+          .apply(null, $('.chat-box span.emoticonImage')
                  .closest('div:not([data-nick]):has(span[style])'))
           .filter(x => x.querySelector('span.emoticonImage').innerHTML.match(/tipped \d+ token(s)?/))
           .map(x => {
