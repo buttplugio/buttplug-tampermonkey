@@ -283,7 +283,7 @@ window.addEventListener("load", function (e) {
                }, false);
 
                connect_intiface_button.addEventListener("click", async (event) => {
-                 const connector = new Buttplug.ButtplugBrowserWebsocketClientConnector("wss://localhost:12346/");
+                 const connector = new Buttplug.ButtplugBrowserWebsocketClientConnector("ws://localhost:12345/");
                  await buttplug_client.Connect(connector);
                  connector_div.style.display = "none";
                  enumeration_div.style.display = "block";
