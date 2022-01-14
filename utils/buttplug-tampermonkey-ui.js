@@ -241,6 +241,7 @@ window.addEventListener("load", function (e) {
                const scanning_button = document.getElementById("buttplug-scanning");
                const connect_browser_button = document.getElementById("buttplug-connect-browser");
                const connect_intiface_button = document.getElementById("buttplug-connect-intiface");
+               const disconnect_button = document.getElementById("buttplug-disconnect");
                const device_list = document.getElementById("buttplug-device-list");
                buttplug_client.addListener('deviceadded', async (device) => {
                  const element_id = `buttplug-device-${device.Index}`;
@@ -287,6 +288,12 @@ window.addEventListener("load", function (e) {
                  await buttplug_client.Connect(connector);
                  connector_div.style.display = "none";
                  enumeration_div.style.display = "block";
+               }, false);
+
+               disconnect_button.addEventListener("click", async (event) => {
+                 await buttplug_client.Disconnect();
+                 enumeration_div.style.display = "none";
+                 connector_div.style.display = "block";
                }, false);
 
                scanning_button.addEventListener('click', async () => {
